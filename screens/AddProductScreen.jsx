@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, Image } from "react-native";
+import { View, Text, TextInput, Button, Image, StyleSheet, TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { auth, db, storage } from "../firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
@@ -53,17 +53,51 @@ export default function AddProductScreen({ navigation }) {
   };
 
   return (
-    <View style={{ padding: 20 }}>
-      <Text>Add Product</Text>
-      <TextInput placeholder="Name" value={name} onChangeText={setName} />
-      <TextInput placeholder="Description" value={description} onChangeText={setDescription} />
-      <TextInput placeholder="Price" value={price} onChangeText={setPrice} keyboardType="numeric" />
-      <TextInput placeholder="Category" value={category} onChangeText={setCategory} />
+    <View style={styles.container}>
+      <Text style={styles.title}>Add Product</Text>
+      <TextInput placeholder="Name" value={name} onChangeText={setName} style={styles.input} />
+      <TextInput placeholder="Description" value={description} onChangeText={setDescription} style={styles.input} />
+      <TextInput placeholder="Price" value={price} onChangeText={setPrice} keyboardType="numeric" style={styles.input} />
+      <TextInput placeholder="Category" value={category} onChangeText={setCategory} style={styles.input} />
       
-      <Button title="Pick Image" onPress={pickImage} />
-      {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
-      
-      <Button title="Add Product" onPress={handleAddProduct} />
+      <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+        <Text style={styles.imagePickerText}>Pick an Image</Text>
+      </TouchableOpacity>
+
+      {image && <Image source={{ uri: image }} style={styles.imagePreview} />}
+
+      <TouchableOpacity style={styles.addButton} onPress={handleAddProduct}>
+        <Text style={styles.addButtonText}>Add Product</Text>
+      </TouchableOpacity>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 20, backgroundColor: "#f9f9f9" },
+  title: { fontSize: 22, fontWeight: "bold", marginBottom: 10 },
+  input: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    marginBottom: 10,
+    backgroundColor: "#fff",
+  },
+  imagePicker: {
+    padding: 10,
+    backgroundColor: "#007bff",
+    borderRadius: 10,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  imagePickerText: { color: "#fff", fontSize: 16 },
+  imagePreview: { width: "100%", height: 150, borderRadius: 10, marginBottom: 10 },
+  addButton: {
+    backgroundColor: "#28a745",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  addButtonText: { color: "#fff", fontSize: 18, fontWeight: "bold" },
+});
