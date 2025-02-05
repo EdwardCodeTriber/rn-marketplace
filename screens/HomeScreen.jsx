@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, Image, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, FlatList, Image, TouchableOpacity, TextInput, StyleSheet } from "react-native";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
@@ -21,12 +21,12 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   return (
-    <View style={{ padding: 20 }}>
-      <TextInput 
-        placeholder="Search by category..." 
-        value={search} 
-        onChangeText={setSearch} 
-        style={{ padding: 10, borderWidth: 1, marginBottom: 10 }}
+    <View style={styles.container}>
+      <TextInput
+        placeholder="Search by category..."
+        value={search}
+        onChangeText={setSearch}
+        style={styles.searchInput}
       />
 
       <FlatList
@@ -35,19 +35,52 @@ export default function HomeScreen({ navigation }) {
         )}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate("ProductDetails", { product: item })}>
-            <View style={{ marginBottom: 20 }}>
-              <Image source={{ uri: item.imageUrl }} style={{ width: "100%", height: 150 }} />
-              <Text style={{ fontSize: 18 }}>{item.name}</Text>
-              <Text>${item.price}</Text>
-            </View>
+          <TouchableOpacity
+            style={styles.productCard}
+            onPress={() => navigation.navigate("ProductDetails", { product: item })}
+          >
+            <Image source={{ uri: item.imageUrl }} style={styles.productImage} />
+            <Text style={styles.productName}>{item.name}</Text>
+            <Text style={styles.productPrice}>${item.price}</Text>
           </TouchableOpacity>
         )}
       />
-      
-      <TouchableOpacity onPress={() => navigation.navigate("AddProduct")}>
-        <Text style={{ fontSize: 20, color: "blue" }}>+ Add Product</Text>
+
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("AddProduct")}>
+        <Text style={styles.addButtonText}>+ Add Product</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 20, backgroundColor: "#f9f9f9" },
+  searchInput: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  productCard: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  productImage: { width: "100%", height: 150, borderRadius: 10 },
+  productName: { fontSize: 18, fontWeight: "bold", marginTop: 5 },
+  productPrice: { fontSize: 16, color: "#666" },
+  addButton: {
+    backgroundColor: "#007bff",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  addButtonText: { color: "#fff", fontSize: 18, fontWeight: "bold" },
+});
