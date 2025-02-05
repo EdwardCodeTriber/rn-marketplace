@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, Button } from "react-native";
+import { View, Text, Image, Button, StyleSheet } from "react-native";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db, auth } from "../firebaseConfig";
 
@@ -18,16 +18,45 @@ export default function ProductDetailsScreen({ route, navigation }) {
   };
 
   return (
-    <View style={{ padding: 20 }}>
-      <Image source={{ uri: product.imageUrl }} style={{ width: "100%", height: 200 }} />
-      <Text style={{ fontSize: 24 }}>{product.name}</Text>
-      <Text>{product.description}</Text>
-      <Text>${product.price}</Text>
-      <Text>Category: {product.category}</Text>
-      
-      {auth.currentUser.uid === product.userId && (
-        <Button title="Delete" onPress={handleDelete} />
-      )}
+    <View style={styles.container}>
+      <Image source={{ uri: product.imageUrl }} style={styles.productImage} />
+      <Text style={styles.productName}>{product.name}</Text>
+      <Text style={styles.productDescription}>{product.description}</Text>
+      <Text style={styles.productPrice}>${product.price}</Text>
+      <Text style={styles.productCategory}>Category: {product.category}</Text>
+
+      <Button title="Delete" onPress={handleDelete} />
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    flex: 1,
+  },
+  productImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 8,
+  },
+  productName: {
+    fontSize: 24,
+    marginVertical: 10,
+    fontWeight: "bold",
+  },
+  productDescription: {
+    fontSize: 16,
+    color: "#555",
+    marginVertical: 10,
+  },
+  productPrice: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  productCategory: {
+    fontSize: 16,
+    marginVertical: 10,
+    color: "#888",
+  },
+});
+
