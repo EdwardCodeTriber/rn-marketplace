@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, Image, TouchableOpacity, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+} from "react-native";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { db } from "../firebase/firebaseConfig";
 
 export default function HomeScreen({ navigation }) {
   const [products, setProducts] = useState([]);
@@ -37,16 +45,24 @@ export default function HomeScreen({ navigation }) {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.productCard}
-            onPress={() => navigation.navigate("ProductDetails", { product: item })}
+            onPress={() =>
+              navigation.navigate("ProductDetails", { product: item })
+            }
           >
-            <Image source={{ uri: item.imageUrl }} style={styles.productImage} />
+            <Image
+              source={{ uri: item.imageUrl }}
+              style={styles.productImage}
+            />
             <Text style={styles.productName}>{item.name}</Text>
             <Text style={styles.productPrice}>${item.price}</Text>
           </TouchableOpacity>
         )}
       />
 
-      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("AddProduct")}>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => navigation.navigate("AddProduct")}
+      >
         <Text style={styles.addButtonText}>+ Add Product</Text>
       </TouchableOpacity>
     </View>

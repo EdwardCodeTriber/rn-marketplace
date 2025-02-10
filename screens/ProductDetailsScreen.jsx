@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, Button, StyleSheet } from "react-native";
 import { deleteDoc, doc } from "firebase/firestore";
-import { db, auth } from "../firebaseConfig";
+import { db, auth } from "../firebase/firebaseConfig";
 
 export default function ProductDetailsScreen({ route, navigation }) {
   const { product } = route.params;
